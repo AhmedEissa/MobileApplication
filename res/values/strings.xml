@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name" translatable="false">Monitor Application</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="title_activity_host_name" translatable="false">Enter Host Name</string>
+    <string name="title_activity_host" translatable="false">Host</string>
+    <string name="title_activity_settings" translatable="false">Settings</string>
+    <string name="title_field_email" translatable="false">Sign out</string>
+    <string name="title_field_password" translatable="false">Password:</string>
+    <string name="title_field_password1" translatable="false">Update your password</string>
+    <string name="title_field_remove_token" translatable="false">Token</string>
+    <string name="title_field_email1" translatable="false">E-mail</string>
+    <string name="title_field_server" translatable="false">Server address:</string>
+    <string name="connect_button" translatable="false">Connect to Host</string>
+    <string name="host_name_connect_button" translatable="false">Send</string>
+    <string name="sign_out_button" translatable="false">Sign Out</string>
+    <string name="exit_button" translatable="false">Exit</string>
+    <string name="setting_button" translatable="false">Settings</string>
+    <string name="token_button" translatable="false">Delete Token</string>
+    <string name="update_button" translatable="false">Update</string>
+    <string name="title_activity_host_choice" translatable="false">Host Choice</string>
+    <string name="title_field_manual_address" translatable="false">Host Address</string>
+    <string name="button_manual_address" translatable="false">Connect</string>
+    <string name="title_activity_graph" translatable="false">Graph Plot</string>
+    <string name="title_activity_nfc" translatable="false">NFC Scanner</string>
+    <string name="button_nfc_address" translatable="false">Scan NFC tag</string>
+    <string name="scanNFC" translatable="false">Scan NFC tag</string>
+    <string name="button_qr_address" translatable="false">Scan QR tag</string>
+    <string name="graph_cpu" translatable="false">CPU Utilization</string>
+    <string name="graph_ram" translatable="false">RAM Utilization</string>
+    <string name="graph_upload" translatable="false">Network upload Utilization</string>
+    <string name="graph_download" translatable="false">Network Download Utilization</string>
+    
+    
+
+</resources>

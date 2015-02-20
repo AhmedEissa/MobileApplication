@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.matthew.bulat.monitorapplication.SettingsActivity$PlaceholderFragment" >
+
+    <TextView
+        android:id="@+id/textView_sign_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/title_field_email"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/sign_out_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView_sign_out"
+        android:layout_below="@+id/textView_sign_out"
+        android:layout_centerHorizontal="true"
+        android:onClick="Sign_out"
+        android:text="@string/sign_out_button" />
+
+    <EditText
+        android:id="@+id/editText_server"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/sign_out_button"
+        android:layout_below="@+id/sign_out_button"
+        android:layout_marginTop="26dp"
+        android:layout_toLeftOf="@+id/server_update_button"
+        android:ems="10"
+        android:inputType="text" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/textView_server"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/sign_out_button"
+        android:layout_below="@+id/sign_out_button"
+        android:text="@string/title_field_server"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/server_update_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/editText_server"
+        android:layout_alignRight="@+id/sign_out_button"
+        android:onClick="Server_address"
+        android:text="@string/update_button" />
+
+</RelativeLayout>
