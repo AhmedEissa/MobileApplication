@@ -7,10 +7,8 @@ package com.matthewbulat.monitorapplication;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
-
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
-
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.content.Context;
@@ -24,7 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-//main menu class w00t!
+
 public class MainMenu extends ActionBarActivity {
 	private WebSocketClient mWebSocketClient;
 	private int autoLog=0;
@@ -116,6 +114,7 @@ public class MainMenu extends ActionBarActivity {
 	public void setting(View view){//Method which will call SettingActivity when Setting button was pressed
 		Intent intent = new Intent(this, SettingsActivity.class);//creating intent to call SettingActivity class
    	 startActivity(intent);//calling activity
+		
 	}
 	//closes this activity/ but do not terminate the application, it can be done from task manager
 	public void exit(View view){
@@ -136,45 +135,34 @@ public class MainMenu extends ActionBarActivity {
         	int userCount= db.getCount();
         	Intent intent = new Intent(this, LoginActivity.class);
         	if(userCount==0){
-        		
         		startActivity(intent);
         	}else if(userCount==1){
         		if(db.TopRow().getToken()!=null){
+        			Websocket();
         			autolog = new AutoLog();
             		autolog.execute((Void) null);
         		}else{
         			startActivity(intent);
         		}
-        		
         	}
         }
     	//android DB should only hold one record, if there are no records that means user will have to login manually, if there are records user will be auto login
-    	
-    	
-
     }
     //class which purpose is to auto login user
-    class AutoLog extends AsyncTask<Void, Void, Boolean> {
+    class AutoLog extends AsyncTask<Void, Void, Boolean>{
 		@Override
 		//Background process to reduce amount of calculation on the main thread
 		protected Boolean doInBackground(Void... params) {
 			//this line will pick up server address that is being stored in database, which will be used later on by websocket class to send data to middleserver
 	        
-			Boolean pass =false;//variable used to define if auto login was successful or not
+			Boolean pass=false;//variable used to define if auto login was successful or not
 			int ready=0;
 			DBInput user = db.TopRow();//importing user credentials, that is username and password
-			Log.d("Websocket", "email " + user.getEmail() + " token "+ user.getToken() + " pass "+ user.getPass());
-    		try{//tries to pick up if connection is ready or not, it will throw NullPointerException if connection is not available and if so it will fork new process and start the connection
-    			ready = mWebSocketClient.getReadyState();
-			}catch(NullPointerException e){
-				Websocket();
-			}
     		int noOfTries_Ready=0;
     		//tries 10 times to start the connection, if not user will be informed by using a toast
     		int sleepTime=0;
     		while(noOfTries_Ready!=9 && ready!=1){
 				try {
-					Log.d("Websocket", ""+ready);
 					ready = mWebSocketClient.getReadyState();
 					if(ready==3){
 						Websocket();
@@ -193,15 +181,10 @@ public class MainMenu extends ActionBarActivity {
 			}
     		//if everything is fine and user is connected to the server, it will try to auto login
 			else{
-				final String request = "autolog";// request type
-				final String credential = user.getEmail();//username from database
-				final String token = user.getToken();//token from DB
-				serial.setRequest(request);//object which will hold the data
-				serial.setEmail(credential);//object which will hold the data
-				serial.setToken(token);//object which will hold the data
-				int choiceOfDataToSend=1;
-				mWebSocketClient.send(secret.Encrypt(serial.getBytes(choiceOfDataToSend)));
-				
+				serial.setRequest("autolog");//object which will hold the data
+				serial.setEmail(user.getEmail());//object which will hold the data
+				serial.setToken(user.getToken());//object which will hold the data
+				mWebSocketClient.send(secret.Encrypt(serial.getBytes(1)));
 				while(autoLog==0){
 				try {
 					Thread.sleep(100);//gives 0.1 seconds for server to reply
@@ -210,10 +193,8 @@ public class MainMenu extends ActionBarActivity {
 					}
 				}
 				if(autoLog==1){
-					runOnUiThread(new Toasting("Connected",2));
 					pass=true;
 				}else if(autoLog==2){
-					
 					pass=false;
 				}
 				//cleans up the data from server
@@ -230,7 +211,6 @@ public class MainMenu extends ActionBarActivity {
 				mWebSocketClient.close();
 				HostChoiceActivity();
 			} else {
-				mWebSocketClient.close();
 				LoginActivity();
 			}
 		}

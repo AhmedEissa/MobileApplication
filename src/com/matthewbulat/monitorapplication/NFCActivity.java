@@ -125,7 +125,7 @@ public class NFCActivity extends ActionBarActivity {
 	public void connectToHost(String localhostname){
 		 Database db = new Database(NFCActivity.this);
 		 DBInput user = db.TopRow();
-		 serial.setRequest("HostAvaibility");
+		 serial.setRequest("HostAvailability");
 		 serial.setEmail(user.getEmail());
 		 serial.setToken(user.getToken());
 		 serial.setData(localhostname);

@@ -160,6 +160,7 @@ public class LoginActivity extends Activity {
 		} else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
+			Websocket();
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
 			mAuthTask = new UserLoginTask();
@@ -273,25 +274,12 @@ public class LoginActivity extends Activity {
 			boolean pass=false;
 			
 			Database db = new Database(LoginActivity.this);
-			
-			
 			//assign variables
 			final String request="login";
 			final String logpass=mEmail+":"+mPassword; 
 			//passes assigned variables to object Message			
 			serial.request=request;
 			serial.data=logpass;
-			//Sends it to server
-			try{
-				mWebSocketClient.getReadyState();
-			}catch(NullPointerException e){
-				Websocket();
-			}
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 				int ready = mWebSocketClient.getReadyState();
 				int noOfTries_Ready=0;
 				while(noOfTries_Ready!=9 && ready!=1){
@@ -319,20 +307,23 @@ public class LoginActivity extends Activity {
 								e.printStackTrace();
 							}
 							}
-						Log.d("Websocket", "req  "+req+" pass" +mPassword);
 						
 						switch(req){
 							case"#*new_token*#":
 									runOnUiThread(new Toasting("New Token was created for you."));
 									int userCount= db.getCount();
 									if(userCount==0){
-										db.addUser(new DBInput(mEmail,secret.Encrypt(mPassword.getBytes()),serial.getToken(dat2)));//user details added to the database
+										db.addUser(new DBInput(mEmail,serial.getToken(dat2)));//user details added to the database
 									}else if(userCount==1){
-										db.updateUser(new DBInput(mEmail,secret.Encrypt(mPassword.getBytes()),serial.getToken(dat2)));//user details updated to the database
+										db.updateUser(new DBInput(mEmail,serial.getToken(dat2)));//user details updated to the database
 									}			
 									pass=true;
 									
 								break;
+							case"#*try_again_user*#":
+									runOnUiThread(new Toasting("Username not found, please check the username"));
+									pass=false;	
+							break;
 							case"#*try_again*#":
 									String tries=serial.getData(dat2);
 									runOnUiThread(new Toasting("Wrong password, number of tries: "+" "+tries+" out of 10."));
@@ -349,9 +340,9 @@ public class LoginActivity extends Activity {
 							case"#*ok*#":
 									int userCount1= db.getCount();
 									if(userCount1==0){
-										db.addUser(new DBInput(mEmail,secret.Encrypt(mPassword.getBytes()),serial.getToken(dat2)));//user details added to the database
+										db.addUser(new DBInput(mEmail,serial.getToken(dat2)));//user details added to the database
 									}else if(userCount1==1){
-										db.updateUser(new DBInput(mEmail,secret.Encrypt(mPassword.getBytes()),serial.getToken(dat2)));//user details updated to the database
+										db.updateUser(new DBInput(mEmail,serial.getToken(dat2)));//user details updated to the database
 									}
 									runOnUiThread(new Toasting("Welcome"));
 									pass=true;

@@ -18,7 +18,6 @@ public class Database extends SQLiteOpenHelper{
     private static final String DETAILS = "details";
     // Contacts Table Columns names
     private static final String EMAIL_ID = "id";
-    private static final String PASSWORD = "password";
     private static final String TOKEN = "token";
     
     public Database(Context context) {
@@ -29,8 +28,7 @@ public class Database extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_DETAILS_TABLE = "CREATE TABLE " + DETAILS + "("
-                + EMAIL_ID + " TEXT PRIMARY KEY," + PASSWORD + " BLOB,"
-                + TOKEN + " TEXT" + ")";
+                + EMAIL_ID + " TEXT PRIMARY KEY," + TOKEN + " TEXT" + ")";
         db.execSQL(CREATE_DETAILS_TABLE);
     }
     // Upgrading database
@@ -49,7 +47,6 @@ public class Database extends SQLiteOpenHelper{
 	 
 	    ContentValues values = new ContentValues();
 	    values.put(EMAIL_ID,dbinput.getEmail());
-	    values.put(PASSWORD, dbinput.getPass()); // user password
 	    values.put(TOKEN, dbinput.getToken()); // user token
 	 
 	    // Inserting Row
@@ -61,12 +58,12 @@ public class Database extends SQLiteOpenHelper{
 	    SQLiteDatabase db = this.getReadableDatabase();
 	 
 	    Cursor cursor = db.query(DETAILS, new String[] { EMAIL_ID,
-	            PASSWORD, TOKEN }, EMAIL_ID + "=?",
+	            TOKEN }, EMAIL_ID + "=?",
 	            new String[] { String.valueOf(email) }, null, null, null, null);
 	    if (cursor != null)
 	        cursor.moveToFirst();
 	 
-	    DBInput user = new DBInput(cursor.getString(0), cursor.getBlob(1), cursor.getString(2));
+	    DBInput user = new DBInput(cursor.getString(0), cursor.getString(1));
 	    cursor.close();
 	    db.close();
 	    // return user
@@ -78,7 +75,7 @@ public class Database extends SQLiteOpenHelper{
 		Cursor cursor = db.rawQuery(query, null);
 		 if (cursor != null)
 		        cursor.moveToFirst();
-		DBInput user = new DBInput(cursor.getString(0), cursor.getBlob(1), cursor.getString(2));
+		DBInput user = new DBInput(cursor.getString(0), cursor.getString(1));
 		cursor.close();
 		db.close();
 		return user;
@@ -100,7 +97,6 @@ public class Database extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
      
         ContentValues values = new ContentValues();
-        values.put(PASSWORD, user.getPass());
         values.put(TOKEN, user.getToken());
         
         // updating row
@@ -129,14 +125,6 @@ public class Database extends SQLiteOpenHelper{
     	SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(EMAIL_ID, newUser);
-        db.update(DETAILS, values, EMAIL_ID + " = ?",
-                new String[] { String.valueOf(user.getEmail()) });
-        db.close();
-    }
-    public void updatePassword(String newPassword,DBInput user){
-    	SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(PASSWORD, newPassword);
         db.update(DETAILS, values, EMAIL_ID + " = ?",
                 new String[] { String.valueOf(user.getEmail()) });
         db.close();

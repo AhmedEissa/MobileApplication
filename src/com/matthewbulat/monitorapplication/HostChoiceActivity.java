@@ -140,7 +140,7 @@ public class HostChoiceActivity extends ActionBarActivity {
 	 public void testHost(){
 		 Database db = new Database(HostChoiceActivity.this);
 		 DBInput user = db.TopRow();
-		 serial.setRequest("HostAvaibility");
+		 serial.setRequest("HostAvailability");
 		 serial.setEmail(user.getEmail());
 		 serial.setToken(user.getToken());
 		 serial.setData(this.localhostName);
